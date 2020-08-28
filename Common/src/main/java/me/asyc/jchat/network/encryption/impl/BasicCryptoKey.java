@@ -1,0 +1,27 @@
+package me.asyc.jchat.network.encryption.impl;
+
+import me.asyc.jchat.network.encryption.CryptoKey;
+
+import javax.crypto.SecretKey;
+import java.security.spec.AlgorithmParameterSpec;
+
+public final class BasicCryptoKey implements CryptoKey {
+
+	private final SecretKey key;
+	private final AlgorithmParameterSpec algorithmParameterSpec;
+
+	public BasicCryptoKey(SecretKey key, AlgorithmParameterSpec algorithmParameterSpec) {
+		this.key = key;
+		this.algorithmParameterSpec = algorithmParameterSpec;
+	}
+
+	@Override
+	public SecretKey getKey() {
+		return this.key;
+	}
+
+	@Override
+	public AlgorithmParameterSpec getParameterSpec() {
+		return this.algorithmParameterSpec;
+	}
+}
