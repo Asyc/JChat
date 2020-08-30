@@ -18,6 +18,11 @@ public interface OutboundPacket extends Packet {
     void write(Channel channel, OutputStream out) throws Exception;
 
     /**
+     * Called after the packet has been written successfully, to the socket
+     */
+    default void postWrite() {}
+
+    /**
      *
      * This method is used to reduce the amount of buffer re-allocations when writing a packet
      *
