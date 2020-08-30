@@ -2,11 +2,10 @@ package me.asyc.jchat.network.packet;
 
 import io.netty.channel.Channel;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * A packet that will be written to an output stream.
+ * A packet that will be written to an output target.
  */
 public interface OutboundPacket extends Packet {
     /**

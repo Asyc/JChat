@@ -6,6 +6,9 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import me.asyc.jchat.network.encryption.CryptoKey;
 import me.asyc.jchat.network.encryption.CryptoManager;
 
+/**
+ * Creates and frames the packet and then writes it out to the socket sndbuf.
+ */
 public final class PacketFrameEncryptor extends MessageToByteEncoder<byte[]> {
 
     private final CryptoManager manager;
@@ -16,6 +19,14 @@ public final class PacketFrameEncryptor extends MessageToByteEncoder<byte[]> {
         this.key = key;
     }
 
+    /**
+     * Writes all the packet data to the provided {@link ByteBuf}
+     * as well as appending a four byte(integer) header of the total packet size.
+     * @param ctx The channel context
+     * @param msg The packet's payload
+     * @param out The output buffer
+     * @throws Exception Thrown if the packet data could not be written to the buffer, or the packet could not be encrypted
+     */
     @Override
     protected void encode(ChannelHandlerContext ctx, byte[] msg, ByteBuf out) throws Exception {
         byte[] sizeHeader = new byte[]{

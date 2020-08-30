@@ -5,6 +5,9 @@ import me.asyc.jchat.network.encryption.CryptoKey;
 import javax.crypto.SecretKey;
 import java.security.spec.AlgorithmParameterSpec;
 
+/**
+ * Simple container class for an <b>AES Key</b>.
+ */
 public final class CryptoKeyAES implements CryptoKey {
 
     private final SecretKey key;

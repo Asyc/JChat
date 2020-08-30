@@ -24,6 +24,10 @@ public class CryptoManagerAES implements CryptoManager {
 
     protected final SecureRandom random;
 
+    /**
+     * Ensures that all the ciphers are available, and
+     * initializes a new {@link SecureRandom}.
+     */
     public CryptoManagerAES() {
         // Making sure that the Ciphers are available
         this.getCipherAES();
