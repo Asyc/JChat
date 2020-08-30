@@ -22,5 +22,5 @@ public interface InboundPacket extends Packet {
      * Called after the packet has been parsed and passed to the last stage of the netty pipeline,
      * the message handler.
      */
-    void handle();
+    void handle() throws Exception;
 }
