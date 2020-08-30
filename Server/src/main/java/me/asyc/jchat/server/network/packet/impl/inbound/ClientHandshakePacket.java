@@ -1,6 +1,8 @@
-package me.asyc.jchat.server.network.packet.impl.in;
+package me.asyc.jchat.server.network.packet.impl.inbound;
 
 import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
+import me.asyc.jchat.network.encryption.CryptoKey;
 import me.asyc.jchat.network.packet.InboundPacket;
 import me.asyc.jchat.server.JChatServer;
 
@@ -9,7 +11,10 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class ClientHandshakePacket implements InboundPacket {
+public final class ClientHandshakePacket implements InboundPacket {
+
+	private static final AttributeKey<CryptoKey> KEY_ATTRIBUTE = AttributeKey.valueOf("jchat:key");
+	private static final AttributeKey<byte[]> VALIDATE_BUFFER_ATTRIBUTE = AttributeKey.valueOf("jchat:validate");
 
 	private Channel channel;
 	private byte[] key;
@@ -25,7 +30,7 @@ public class ClientHandshakePacket implements InboundPacket {
 		this.validate = new byte[in.readInt()];
 		in.readFully(this.validate);
 
-		this.originalValidate = channel.attr(ChannelAttributes.VALIDATE_BUFFER).getAndSet(null);
+		this.originalValidate = channel.attr(ClientHandshakePacket.VALIDATE_BUFFER_ATTRIBUTE).getAndSet(null);
 	}
 
 	@Override
@@ -35,7 +40,7 @@ public class ClientHandshakePacket implements InboundPacket {
 			this.channel.close();
 		}
 
-		this.channel.attr(ChannelAttributes.KEY).set(JChatServer.INSTANCE.getCryptoManager().createKey(this.key));
+		this.channel.attr(ClientHandshakePacket.KEY_ATTRIBUTE).set(JChatServer.INSTANCE.getCryptoManager().createKeyFromBuffer(this.key));
 	}
 
 	@Override

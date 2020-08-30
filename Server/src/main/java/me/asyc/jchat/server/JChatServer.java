@@ -1,26 +1,22 @@
 package me.asyc.jchat.server;
 
-import me.asyc.jchat.network.encryption.CryptoManager;
-import me.asyc.jchat.network.encryption.impl.BasicCryptoManager;
-
+import me.asyc.jchat.server.encryption.ServerCryptoManager;
 
 public class JChatServer {
-
 	public static final JChatServer INSTANCE = new JChatServer();
 
-	private final CryptoManager cryptoManager;
+	private final ServerCryptoManager cryptoManager;
 
 	private JChatServer() {
 		System.out.println("Starting Server");
-		this.cryptoManager = new BasicCryptoManager();
+		this.cryptoManager = new ServerCryptoManager();
 	}
 
-	public CryptoManager getCryptoManager() {
+	public ServerCryptoManager getCryptoManager() {
 		return this.cryptoManager;
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException {
 		Class.forName("me.asyc.jchat.server.JChatServer");
 	}
-
 }

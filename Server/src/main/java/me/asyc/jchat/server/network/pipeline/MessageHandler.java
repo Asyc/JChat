@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import me.asyc.jchat.network.exception.UnknownPacketException;
+import me.asyc.jchat.network.packet.InboundPacket;
 import me.asyc.jchat.network.packet.Packet;
 
 @ChannelHandler.Sharable
@@ -11,9 +12,9 @@ public final class MessageHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		Packet packet;
+		InboundPacket packet;
 		try {
-			packet = (Packet) msg;
+			packet = (InboundPacket) msg;
 		} catch (ClassCastException e) {
 			throw new UnknownPacketException();
 		}

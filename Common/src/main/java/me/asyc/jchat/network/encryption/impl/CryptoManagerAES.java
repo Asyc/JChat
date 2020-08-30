@@ -7,29 +7,29 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
 
-public final class BasicCryptoManager implements CryptoManager {
+/**
+ * Implementation of {@link CryptoManager} utilizing <b>AES/CFB8/NoPadding</b> encryption
+ */
+public class CryptoManagerAES implements CryptoManager {
 
-	private final SecureRandom random;
-	private final KeyPair rsaKeyPair;
+	protected final SecureRandom random;
 
-	public BasicCryptoManager() {
+	public CryptoManagerAES() {
 		// Making sure that the Ciphers are available
-		System.out.println("Preparing Encryption");
 		this.getCipherAES();
+		this.getCipherRSA();
 
 		this.random = new SecureRandom();
-		this.rsaKeyPair = this.generateKeyPairRSA();  //This will make sure RSA is available
 	}
 
 	@Override
@@ -57,61 +57,39 @@ public final class BasicCryptoManager implements CryptoManager {
 	}
 
 	@Override
-	public byte[] encryptHandshake(byte[]... in) {
-		try {
-			Cipher cipher = Cipher.getInstance("RSA");
-			cipher.init(Cipher.ENCRYPT_MODE, this.rsaKeyPair.getPublic());
+	public byte[] encryptRSA(PublicKey key, byte[]... in) throws GeneralSecurityException {
+		Cipher cipher = this.getCipherRSA();
+		cipher.init(Cipher.ENCRYPT_MODE, key);
 
-			for (byte[] array : in) {
-				cipher.update(array);
-			}
-
-			return cipher.doFinal();
-		} catch (GeneralSecurityException e) {
-			e.printStackTrace();
+		for (byte[] array : in) {
+			cipher.update(array);
 		}
 
-		return null;
+		return cipher.doFinal();
 	}
 
 	@Override
-	public byte[] decryptHandshake(byte[]... in) {
-		try {
-			Cipher cipher = Cipher.getInstance("RSA");
-			cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyPair.getPrivate());
+	public byte[] decryptRSA(PrivateKey key, byte[]... in) throws GeneralSecurityException {
+		Cipher cipher = this.getCipherRSA();
+		cipher.init(Cipher.DECRYPT_MODE, key);
 
-			for (byte[] array : in) {
-				cipher.update(array);
-			}
-
-			return cipher.doFinal();
-		} catch (GeneralSecurityException e) {
-			e.printStackTrace();
+		for (byte[] array : in) {
+			cipher.update(array);
 		}
 
-		return null;
-	}
-
-	@Override
-	public int getFrameSize() {
-		return 1024;
-	}
-
-	@Override
-	public CryptoKey createKey(byte[] buffer) {
-		return new BasicCryptoKey(new SecretKeySpec(buffer, "AES/CFB8/NoPadding"), new IvParameterSpec(buffer));
+		return cipher.doFinal();
 	}
 
 	@Override
 	public CryptoKey generateKey() {
 		byte[] buffer = new byte[128];
 		this.random.nextBytes(buffer);
-		return new BasicCryptoKey(new SecretKeySpec(buffer, "AES"), new IvParameterSpec(buffer));
+		return new CryptoKeyAES(new SecretKeySpec(buffer, "AES"), new IvParameterSpec(buffer));
 	}
 
 	@Override
-	public KeyPair getHandshakeKeyPair() {
-		return this.rsaKeyPair;
+	public CryptoKey createKeyFromBuffer(byte[] buffer) {
+		return new CryptoKeyAES(new SecretKeySpec(buffer, "AES/CFB8/NoPadding"), new IvParameterSpec(buffer));
 	}
 
 	private Cipher getCipherAES() {
@@ -119,21 +97,20 @@ public final class BasicCryptoManager implements CryptoManager {
 			return Cipher.getInstance("AES/CFB8/NoPadding");
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
 			e.printStackTrace();
-			System.err.println("AES/CFB8/NoPadding is not Supported");
+			System.err.println("AES/CFB8/NoPadding Encryption is not Supported");
 			System.exit(-1);
 		}
 
 		return null;
 	}
 
-	private KeyPair generateKeyPairRSA() {
+	private Cipher getCipherRSA() {
 		try {
-			KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-			generator.initialize(1024, this.random);
-			return generator.generateKeyPair();
-		} catch (NoSuchAlgorithmException e) {
+			return Cipher.getInstance("RSA");
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
 			e.printStackTrace();
-			System.err.println("RSA is not Supported");
+			System.err.println("RSA Encryption is not Supported");
+			System.exit(-1);
 		}
 
 		return null;

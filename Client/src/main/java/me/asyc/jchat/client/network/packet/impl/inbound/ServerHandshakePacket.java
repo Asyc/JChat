@@ -1,7 +1,7 @@
-package me.asyc.jchat.client.network.packet.impl.in;
+package me.asyc.jchat.client.network.packet.impl.inbound;
 
 import io.netty.channel.Channel;
-import me.asyc.jchat.client.network.packet.impl.out.ClientHandshakePacket;
+import me.asyc.jchat.client.network.packet.impl.outbound.ClientHandshakePacket;
 import me.asyc.jchat.network.packet.InboundPacket;
 
 import java.io.ByteArrayInputStream;

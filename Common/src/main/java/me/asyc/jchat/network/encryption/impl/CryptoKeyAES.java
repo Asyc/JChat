@@ -5,12 +5,12 @@ import me.asyc.jchat.network.encryption.CryptoKey;
 import javax.crypto.SecretKey;
 import java.security.spec.AlgorithmParameterSpec;
 
-public final class BasicCryptoKey implements CryptoKey {
+public final class CryptoKeyAES implements CryptoKey {
 
 	private final SecretKey key;
 	private final AlgorithmParameterSpec algorithmParameterSpec;
 
-	public BasicCryptoKey(SecretKey key, AlgorithmParameterSpec algorithmParameterSpec) {
+	public CryptoKeyAES(SecretKey key, AlgorithmParameterSpec algorithmParameterSpec) {
 		this.key = key;
 		this.algorithmParameterSpec = algorithmParameterSpec;
 	}
