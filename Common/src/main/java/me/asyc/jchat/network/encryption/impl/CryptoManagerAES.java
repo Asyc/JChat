@@ -7,8 +7,10 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -55,8 +57,49 @@ public final class BasicCryptoManager implements CryptoManager {
 	}
 
 	@Override
+	public byte[] encryptHandshake(byte[]... in) {
+		try {
+			Cipher cipher = Cipher.getInstance("RSA");
+			cipher.init(Cipher.ENCRYPT_MODE, this.rsaKeyPair.getPublic());
+
+			for (byte[] array : in) {
+				cipher.update(array);
+			}
+
+			return cipher.doFinal();
+		} catch (GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public byte[] decryptHandshake(byte[]... in) {
+		try {
+			Cipher cipher = Cipher.getInstance("RSA");
+			cipher.init(Cipher.DECRYPT_MODE, this.rsaKeyPair.getPrivate());
+
+			for (byte[] array : in) {
+				cipher.update(array);
+			}
+
+			return cipher.doFinal();
+		} catch (GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
 	public int getFrameSize() {
-		return 0;
+		return 1024;
+	}
+
+	@Override
+	public CryptoKey createKey(byte[] buffer) {
+		return new BasicCryptoKey(new SecretKeySpec(buffer, "AES/CFB8/NoPadding"), new IvParameterSpec(buffer));
 	}
 
 	@Override

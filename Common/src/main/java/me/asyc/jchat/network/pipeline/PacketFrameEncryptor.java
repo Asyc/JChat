@@ -11,7 +11,6 @@ public final class PacketEncryptFramer extends MessageToByteEncoder<byte[]> {
 	private final CryptoManager manager;
 	private final CryptoKey key;
 
-
 	public PacketEncryptFramer(CryptoManager manager, CryptoKey key) {
 		this.manager = manager;
 		this.key = key;

@@ -2,7 +2,6 @@ package me.asyc.jchat.server.network.packet.impl.in;
 
 import io.netty.channel.Channel;
 import me.asyc.jchat.network.packet.InboundPacket;
-import me.asyc.jchat.network.pipeline.ChannelAttributes;
 import me.asyc.jchat.server.JChatServer;
 
 import java.io.ByteArrayInputStream;
