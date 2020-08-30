@@ -21,34 +21,34 @@ import java.util.List;
 @ChannelHandler.Sharable
 public final class PacketDeserializer extends MessageToMessageDecoder<byte[]> {
 
-	private final PacketResolver factory;
+    private final PacketResolver factory;
 
-	public PacketDeserializer(PacketResolver factory) {
-		this.factory = factory;
-	}
+    public PacketDeserializer(PacketResolver factory) {
+        this.factory = factory;
+    }
 
-	/**
-	 *
-	 * This method takes in a byte array, and parses it to a {@link InboundPacket} then
-	 * sends it down the netty pipeline.
-	 *
-	 * @param ctx The channel context
-	 * @param msg The packet payload
-	 * @param out The object output list
-	 * @throws Exception Throws an exception if the Packet could not be de-serialized
-	 */
-	@Override
-	protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(msg));
+    /**
+     *
+     * This method takes in a byte array, and parses it to a {@link InboundPacket} then
+     * sends it down the netty pipeline.
+     *
+     * @param ctx The channel context
+     * @param msg The packet payload
+     * @param out The object output list
+     * @throws Exception Throws an exception if the Packet could not be de-serialized
+     */
+    @Override
+    protected void decode(ChannelHandlerContext ctx, byte[] msg, List<Object> out) throws Exception {
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(msg));
 
-		short packetID = in.readShort();
+        short packetID = in.readShort();
 
-		InboundPacket packet = this.factory.createPacketFromID(packetID);
+        InboundPacket packet = this.factory.createPacketFromID(packetID);
 
-		if (packet == null) throw new UnknownPacketException();
+        if (packet == null) throw new UnknownPacketException();
 
-		packet.read(ctx.channel(), msg);
-		out.add(packet);
-	}
+        packet.read(ctx.channel(), msg);
+        out.add(packet);
+    }
 
 }

@@ -11,20 +11,20 @@ import java.net.SocketException;
 
 public class Connection {
 
-	private final Bootstrap bootstrap;
+    private final Bootstrap bootstrap;
 
-	public Connection(String ip, int port) throws SocketException {
-		EventLoopGroup group = new NioEventLoopGroup(1);
+    public Connection(String ip, int port) throws SocketException {
+        EventLoopGroup group = new NioEventLoopGroup(1);
 
-		this.bootstrap = new Bootstrap()
-			.group(group)
-			.handler(new SocketChannelInitializer(JChatClient.INSTANCE.getCryptoManager(), PacketList.PACKET_RESOLVER));
+        this.bootstrap = new Bootstrap()
+            .group(group)
+            .handler(new SocketChannelInitializer(JChatClient.INSTANCE.getCryptoManager(), PacketList.PACKET_RESOLVER));
 
 
-		this.bootstrap.bind(ip, port);
-		this.bootstrap.group(group);
-		if (!this.bootstrap.connect(ip, port).awaitUninterruptibly().isSuccess()) {
-			throw new SocketException();
-		}
-	}
+        this.bootstrap.bind(ip, port);
+        this.bootstrap.group(group);
+        if (!this.bootstrap.connect(ip, port).awaitUninterruptibly().isSuccess()) {
+            throw new SocketException();
+        }
+    }
 }

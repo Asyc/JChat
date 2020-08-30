@@ -8,12 +8,12 @@ import me.asyc.jchat.network.packet.InboundPacket;
  * packet object.
  */
 public interface PacketResolver {
-	/**
-	 * Creates a {@link InboundPacket} object that matches with the supplied identifier.
-	 *
-	 * @param id The unique identifier of the packet
-	 * @return Returns the created {@link InboundPacket} object
-	 * @throws UnknownPacketException Thrown if the supplied packet ID is invalid
-	 */
-	InboundPacket createPacketFromID(short id) throws UnknownPacketException;
+    /**
+     * Creates a {@link InboundPacket} object that matches with the supplied identifier.
+     *
+     * @param id The unique identifier of the packet
+     * @return Returns the created {@link InboundPacket} object
+     * @throws UnknownPacketException Thrown if the supplied packet ID is invalid
+     */
+    InboundPacket createPacketFromID(short id) throws UnknownPacketException;
 }

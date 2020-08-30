@@ -10,18 +10,18 @@ import java.io.ByteArrayOutputStream;
  */
 public final class MutableByteArrayOutputStream extends ByteArrayOutputStream {
 
-	public MutableByteArrayOutputStream() {
-		super();
-	}
+    public MutableByteArrayOutputStream() {
+        super();
+    }
 
-	public MutableByteArrayOutputStream(int size) {
-		super(size);
-	}
+    public MutableByteArrayOutputStream(int size) {
+        super(size);
+    }
 
-	/**
-	 * @return Returns a copy of the underlying buffer
-	 */
-	public synchronized byte[] getByteArray() {
-		return super.buf;
-	}
+    /**
+     * @return Returns a copy of the underlying buffer
+     */
+    public synchronized byte[] getByteArray() {
+        return super.buf;
+    }
 }

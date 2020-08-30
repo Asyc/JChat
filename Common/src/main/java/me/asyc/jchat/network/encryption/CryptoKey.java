@@ -8,6 +8,6 @@ import java.security.spec.AlgorithmParameterSpec;
  * Used in the {@link CryptoManager}.
  */
 public interface CryptoKey {
-	SecretKey getKey();
-	AlgorithmParameterSpec getParameterSpec();
+    SecretKey getKey();
+    AlgorithmParameterSpec getParameterSpec();
 }

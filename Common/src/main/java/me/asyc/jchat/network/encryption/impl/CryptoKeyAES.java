@@ -7,21 +7,21 @@ import java.security.spec.AlgorithmParameterSpec;
 
 public final class CryptoKeyAES implements CryptoKey {
 
-	private final SecretKey key;
-	private final AlgorithmParameterSpec algorithmParameterSpec;
+    private final SecretKey key;
+    private final AlgorithmParameterSpec algorithmParameterSpec;
 
-	public CryptoKeyAES(SecretKey key, AlgorithmParameterSpec algorithmParameterSpec) {
-		this.key = key;
-		this.algorithmParameterSpec = algorithmParameterSpec;
-	}
+    public CryptoKeyAES(SecretKey key, AlgorithmParameterSpec algorithmParameterSpec) {
+        this.key = key;
+        this.algorithmParameterSpec = algorithmParameterSpec;
+    }
 
-	@Override
-	public SecretKey getKey() {
-		return this.key;
-	}
+    @Override
+    public SecretKey getKey() {
+        return this.key;
+    }
 
-	@Override
-	public AlgorithmParameterSpec getParameterSpec() {
-		return this.algorithmParameterSpec;
-	}
+    @Override
+    public AlgorithmParameterSpec getParameterSpec() {
+        return this.algorithmParameterSpec;
+    }
 }

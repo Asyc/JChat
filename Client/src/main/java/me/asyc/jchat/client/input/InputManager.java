@@ -7,44 +7,44 @@ import java.util.function.Consumer;
 
 public class InputManager {
 
-	private final Thread inputThread;
+    private final Thread inputThread;
 
-	private final Consumer<String> inputCallback;
+    private final Consumer<String> inputCallback;
 
-	private String ip;
-	private int port;
+    private String ip;
+    private int port;
 
-	public InputManager(Consumer<String> callback) {
-		this.inputCallback = callback;
+    public InputManager(Consumer<String> callback) {
+        this.inputCallback = callback;
 
-		this.inputThread = new Thread(() -> {
-			Scanner scanner = new Scanner(System.in);
+        this.inputThread = new Thread(() -> {
+            Scanner scanner = new Scanner(System.in);
 
-			while (!Thread.currentThread().isInterrupted()) {
-				String input = scanner.nextLine();
-				InputManager.this.inputCallback.accept(input);
-			}
-		});
+            while (!Thread.currentThread().isInterrupted()) {
+                String input = scanner.nextLine();
+                InputManager.this.inputCallback.accept(input);
+            }
+        });
 
-		this.inputThread.start();
-	}
+        this.inputThread.start();
+    }
 
-	private void processInput(String in) {
-		if (JChatClient.INSTANCE.getConnection() == null) {
-			this.inputCallback.accept(in);
-			return;
-		}
+    private void processInput(String in) {
+        if (JChatClient.INSTANCE.getConnection() == null) {
+            this.inputCallback.accept(in);
+            return;
+        }
 
-		if (this.ip == null) {
-			System.out.println("Enter Server IP: ");
-		}
+        if (this.ip == null) {
+            System.out.println("Enter Server IP: ");
+        }
 
-	}
+    }
 
-	public void shutdown() {
-		this.inputThread.interrupt();
-		try {
-			this.inputThread.join();
-		} catch (InterruptedException ignore) {}
-	}
+    public void shutdown() {
+        this.inputThread.interrupt();
+        try {
+            this.inputThread.join();
+        } catch (InterruptedException ignore) {}
+    }
 }

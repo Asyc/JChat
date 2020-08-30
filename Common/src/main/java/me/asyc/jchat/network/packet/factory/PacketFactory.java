@@ -8,8 +8,8 @@ import me.asyc.jchat.network.packet.InboundPacket;
  * Used to prevent the use of reflection in creating objects, to minimize overhead.
  */
 public interface PacketFactory {
-	/**
-	 * @return Returns a new {@link InboundPacket} handle.
-	 */
-	InboundPacket createPacket();
+    /**
+     * @return Returns a new {@link InboundPacket} handle.
+     */
+    InboundPacket createPacket();
 }
